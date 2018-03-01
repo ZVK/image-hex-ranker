@@ -83,7 +83,8 @@ async def run(limit):
                 tasks.append(task)
                 if (line_index+1 == limit):
                     try:
-                        responses = loopasyncio.wait(*tasks)
+                        responses = asyncio.gather(*tasks)
+                        print(responses)
                         await responses
                         tasks = []
                     except:
