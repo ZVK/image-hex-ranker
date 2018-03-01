@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from collections import Counter
 from PIL import Image
 import numpy as np
@@ -9,7 +10,7 @@ import async_timeout
 import io
 
 HEADERS = {'User-Agent': 'custom-header'}
-VERBOSE = True
+VERBOSE = False
 
 async def write_log(file, message):
     try:
