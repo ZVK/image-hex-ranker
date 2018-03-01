@@ -63,7 +63,10 @@ async def fetch(url, session):
 async def bound_fetch(sem, url, session):
     # Getter function with semaphore.
     async with sem:
-        await fetch(url, session)
+        try:
+            await fetch(url, session)
+        except Exception:
+            print('bf')
 
 
 async def run(limit):
@@ -84,7 +87,6 @@ async def run(limit):
                 if (line_index+1 == limit):
                     try:
                         responses = asyncio.gather(*tasks)
-                        print(responses)
                         await responses
                         tasks = []
                     except:
