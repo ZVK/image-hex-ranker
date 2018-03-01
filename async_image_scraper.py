@@ -1,7 +1,6 @@
 from collections import Counter
 from PIL import Image
 import numpy as np
-import urllib.request
 import time
 import aiohttp
 import asyncio
@@ -89,11 +88,9 @@ async def run(limit):
         if len(tasks) > 0:
             responses = asyncio.gather(*tasks)
             await responses
-            
-    write_log("error_log.txt", "\n")
 
 start = time.time()
-batch_size = 4
+batch_size = 3
 loop = asyncio.get_event_loop()
 future = asyncio.ensure_future(run(batch_size))
 try:
@@ -101,4 +98,5 @@ try:
 except:
     print('exiting')
 loop.close()
+write_log("error_log.txt", "\n")
 print("total runtime", time.time()-start)
