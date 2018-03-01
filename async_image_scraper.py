@@ -54,8 +54,7 @@ async def fetch(url, session):
                 write_log("error_log.txt", "{}, ERROR_RESPONSE_STATUS_{}".format(url, response.status))
     except Exception:
         write_log("error_log.txt", "{}, ERROR_FETCH_TIMEOUT".format(url))
-        raise
-    
+        raise 
 
 async def bound_fetch(sem, url, session):
     # Getter function with semaphore.
@@ -64,7 +63,6 @@ async def bound_fetch(sem, url, session):
             await fetch(url, session)
         except Exception:
             print('bf')
-
 
 async def run(limit):
     def file_reader():
@@ -93,7 +91,6 @@ async def run(limit):
             await responses
             
     write_log("error_log.txt", "\n")
-
 
 start = time.time()
 batch_size = 4
