@@ -4,6 +4,8 @@ Uses Python's asyncio to batch request images from a list of URLs and logs the t
 ## dependencies
 - Python 3.6
 
+- Aiohttp
+
 - PIL
 
 - Numpy
