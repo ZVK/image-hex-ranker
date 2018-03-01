@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 from collections import Counter
 from PIL import Image
 import numpy as np
@@ -10,14 +9,11 @@ import async_timeout
 import io
 
 HEADERS = {'User-Agent': 'custom-header'}
-VERBOSE = False
 
-async def write_log(file, message):
+def write_log(file, message):
     try:
         with open(file, "a") as log:
             log.write("{}\n".format(message))
-            if (VERBOSE):
-                print(message)
     except:
         print('WARNING: write_log() last line was not logged')
 
@@ -27,7 +23,7 @@ async def color_ranker(response):
     try:
         image = Image.open(io.BytesIO(response), "r")
     except:
-        await write_log("error_log.txt", 'ERROR_IMAGE_OPEN'.format(url))
+        write_log("error_log.txt", 'ERROR_IMAGE_OPEN'.format(url))
         raise
     try:
         pixels = list(image.getdata())
@@ -39,7 +35,7 @@ async def color_ranker(response):
         counts = Counter(pixels_hex).most_common(3)
         return [counts[0][0], counts[1][0], counts[2][0]]
     except Exception:
-        await write_log("error_log.txt","{}, ERROR_COLOR_RANKER".format(url))
+        write_log("error_log.txt","{}, ERROR_COLOR_RANKER".format(url))
         raise
 
 async def fetch(url, session):
@@ -52,12 +48,12 @@ async def fetch(url, session):
                     print('ERROR response.read()')
                     raise
                 colors = await color_ranker(img)
-                await write_log("colors.csv","{}, {}, {}, {}".format(url, colors[0], colors[1], colors[2]))
+                write_log("colors.csv","{}, {}, {}, {}".format(url, colors[0], colors[1], colors[2]))
                 return colors
             else:
-                await write_log("error_log.txt", "{}, ERROR_RESPONSE_STATUS_{}".format(url, response.status))
+                write_log("error_log.txt", "{}, ERROR_RESPONSE_STATUS_{}".format(url, response.status))
     except Exception:
-        await write_log("error_log.txt", "{}, ERROR_FETCH_TIMEOUT".format(url))
+        write_log("error_log.txt", "{}, ERROR_FETCH_TIMEOUT".format(url))
         raise
     
 
@@ -96,11 +92,11 @@ async def run(limit):
             responses = asyncio.gather(*tasks)
             await responses
             
-    await write_log("error_log.txt", "\n")
+    write_log("error_log.txt", "\n")
 
 
 start = time.time()
-batch_size = 3
+batch_size = 4
 loop = asyncio.get_event_loop()
 future = asyncio.ensure_future(run(batch_size))
 try:
@@ -108,4 +104,4 @@ try:
 except:
     print('exiting')
 loop.close()
-print(time.time()-start)
+print("total runtime", time.time()-start)
