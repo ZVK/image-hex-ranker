@@ -9,7 +9,7 @@ Uses Python's asyncio to batch request images from a list of URLs and logs the t
 - Numpy
 
 ## quick start
-
 <pre>
+  cd ./image-hex-ranker/
   python async_image_scraper.py
 </pre>
